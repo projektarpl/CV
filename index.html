@@ -1373,11 +1373,11 @@ function getPdfExportFilename(mainTitle, lang) {
   let raw = (mainTitle || '').split(',')[0].trim();
   
   // Strip trailing profession (architekt, architect)
-  raw = raw.replace(/s*[-—/]?s*(architekt|architect)/gi, '').trim();
+  raw = raw.replace(/\s*[-—/]?\s*(architekt|architect)\b/gi, '').trim();
   
   // Strip common academic titles like mgr inż. arch. dr prof.
-  while (/(^|s)(mgr|inż|inz|dr|arch|prof).?(s|$)/i.test(raw)) {
-    raw = raw.replace(/(^|s)(mgr|inż|inz|dr|arch|prof).?(s|$)/gi, ' ').trim();
+  while (/(^|\s)(mgr|inż|inz|dr|arch|prof)\.?(\s|$)/i.test(raw)) {
+    raw = raw.replace(/(^|\s)(mgr|inż|inz|dr|arch|prof)\.?(\s|$)/gi, ' ').trim();
   }
 
   // If input was "jankowalski" without space or camelCase
@@ -1389,12 +1389,12 @@ function getPdfExportFilename(mainTitle, lang) {
   }
 
   // Replace underscores, dots, hyphens, slashes with spaces so they become separate words
-  raw = raw.replace(/[_./]+/g, ' ').trim();
+  raw = raw.replace(/[_.\/]+/g, ' ').trim();
 
   if (!raw) raw = 'Jan Kowalski';
 
   // Capitalize each word properly (e.g. "JAN" -> "Jan", "kowalski" -> "Kowalski")
-  let words = raw.split(/s+/).filter(Boolean).map(function(w) {
+  let words = raw.split(/\s+/).filter(Boolean).map(function(w) {
     return w.split('-').map(function(part) {
       if (!part) return '';
       return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
@@ -1418,12 +1418,12 @@ function getPdfExportFilename(mainTitle, lang) {
       'ż': 'z', 'Ż': 'Z'
     };
     nameStr = nameStr.replace(/[ąĄćĆęĘłŁńŃóÓśŚźŹżŻ]/g, function(c) { return plMap[c] || c; });
-    nameStr = nameStr.normalize('NFD').replace(/[̀-ͯ]/g, '');
-    nameStr = nameStr.replace(/[^a-zA-Z0-9_-]/g, '');
+    nameStr = nameStr.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    nameStr = nameStr.replace(/[^a-zA-Z0-9_\-]/g, '');
     if (!nameStr) nameStr = 'Jan_Kowalski';
     return nameStr + '_Architect_CV_EN.pdf';
   } else {
-    nameStr = nameStr.replace(/[^a-zA-Z0-9_-ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/g, '');
+    nameStr = nameStr.replace(/[^a-zA-Z0-9_\-ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/g, '');
     if (!nameStr) nameStr = 'Jan_Kowalski';
     return nameStr + '_Architekt_CV_PL.pdf';
   }
