@@ -1369,17 +1369,39 @@ function setLanguage(lang) {
 
 
 function getPdfExportFilename(mainTitle, lang) {
-  const isEN = (lang === 'EN' || lang === 'ENG');
+  const isEN = (String(lang || '').toUpperCase().indexOf('EN') !== -1);
   let raw = (mainTitle || '').split(',')[0].trim();
+  
+  // Strip trailing profession (architekt, architect)
   raw = raw.replace(/s*[-—/]?s*(architekt|architect)/gi, '').trim();
-  if (!raw) raw = isEN ? 'Jan Kowalski' : 'Jan Kowalski';
+  
+  // Strip common academic titles like mgr inż. arch. dr prof.
+  while (/(^|s)(mgr|inż|inz|dr|arch|prof).?(s|$)/i.test(raw)) {
+    raw = raw.replace(/(^|s)(mgr|inż|inz|dr|arch|prof).?(s|$)/gi, ' ').trim();
+  }
 
-  let words = raw.split(/s+/).map(function(w) {
+  // If input was "jankowalski" without space or camelCase
+  if (raw.toLowerCase() === 'jankowalski') {
+    raw = 'Jan Kowalski';
+  } else {
+    // Split on camelCase (e.g. JanKowalski -> Jan Kowalski)
+    raw = raw.replace(/([a-ząćęłńóśźż])([A-ZĄĆĘŁŃÓŚŹŻ])/g, '$1 $2');
+  }
+
+  // Replace underscores, dots, hyphens, slashes with spaces so they become separate words
+  raw = raw.replace(/[_./]+/g, ' ').trim();
+
+  if (!raw) raw = 'Jan Kowalski';
+
+  // Capitalize each word properly (e.g. "JAN" -> "Jan", "kowalski" -> "Kowalski")
+  let words = raw.split(/s+/).filter(Boolean).map(function(w) {
     return w.split('-').map(function(part) {
       if (!part) return '';
       return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
     }).join('-');
   });
+
+  if (words.length === 0) words = ['Jan', 'Kowalski'];
 
   let nameStr = words.join('_');
 
