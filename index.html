@@ -567,25 +567,42 @@ body.pdf-export-mode .pdf-export-overlay {
   }
 
   body:not(.pdf-export-mode) .action-bar-wrapper {
-    top: 6px !important;
+    top: 8px !important;
     width: 100% !important;
     margin-bottom: 14px !important;
     display: flex !important;
-    justify-content: center !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
   }
 
   body:not(.pdf-export-mode) .action-pill-bar {
-    width: 100% !important;
-    max-width: 480px !important;
-    flex-wrap: wrap !important;
+    width: auto !important;
+    max-width: calc(100vw - 16px) !important;
+    display: inline-flex !important;
+    align-items: center !important;
     justify-content: center !important;
+    flex-wrap: nowrap !important;
     gap: 6px !important;
-    padding: 6px !important;
-    border-radius: 20px !important;
+    padding: 5px 8px !important;
+    border-radius: 9999px !important;
+  }
+
+  body:not(.pdf-export-mode) .pill-btn {
+    height: 32px !important;
+    padding: 0 10px !important;
+    font-size: 11px !important;
+    gap: 5px !important;
+  }
+
+  body:not(.pdf-export-mode) .lang-btn {
+    height: 26px !important;
+    padding: 0 8px !important;
+    font-size: 11px !important;
   }
 
   body:not(.pdf-export-mode) .pill-divider {
-    display: none !important;
+    display: block !important;
   }
 
   body:not(.pdf-export-mode) .cv-page {
@@ -1100,14 +1117,14 @@ body.pdf-export-mode .pdf-export-overlay {
 
 <script>
 const DATA_PL = {
-  "mainTitle": "WOJCIECH GOŁĄB, architekt",
+  "mainTitle": "JAN KOWALSKI, architekt",
   "mainSubtitle": "architekt uprawniony · członek IARP · wieloletnie doświadczenie",
   "mainScopeLines": [
     "proces inwestycyjny, projektowanie architektoniczne, projekty koncepcyjne, budowlane",
-    "i techniczne, procedury w organach administracji, koordynacja, nadzór"
+    "i techniczne, procedury w organach administracji, koordynacja, nadzór."
   ],
-  "contactPhone": "+48 889 536 880",
-  "contactEmail": "kontakt@projektar.pl",
+  "contactPhone": "+48 600 600 600",
+  "contactEmail": "jan.kowalski@op.pl",
   "contactLocation": "Warszawa, Polska",
   "lblProfile": "PROFIL ZAWODOWY",
   "profileText": "Prowadzę projekty obiektów kubaturowych od analiz i procedur administracyjnych, przez dokumentację projektową i koordynację wielobranżową, po nadzór autorski. Specjalizuję się w dużych inwestycjach, w tym zabudowie mieszkaniowej.",
@@ -1115,9 +1132,9 @@ const DATA_PL = {
   "job1Title": "Właściciel / Główny Projektant — Architekt",
   "job1Sub": "2003-obecnie   ·   Własna działalność",
   "metric1Num": "1300+",
-  "metric1Text": "zaprojektowanych mieszkań w Warszawie",
+  "metric1Text": "zaprojektowanych mieszkań w xxx, xxx, xxx.",
   "metric2Num": "70+",
-  "metric2Text": "przeprowadzonych postępowań administracyjnych dotyczących pozwoleń na budowę i warunków zabudowy",
+  "metric2Text": "przeprowadzonych postępowań administracyjnych dotyczących pozwoleń na budowę i warunków zabudowy.",
   "job1Bullets": [
     "Prowadzenie projektów architektonicznych obiektów kubaturowych jako główny projektant i współprojektant.",
     "Kompleksowe przygotowanie dokumentacji projektowej.",
@@ -1125,29 +1142,29 @@ const DATA_PL = {
     "Nadzory autorskie."
   ],
   "collabIntro": "Współpraca m.in. z firmami:",
-  "partnersText": "Dom Development, Budimex, Volumetric, Dantex, Auchan",
-  "job2Title": "Główny Architekt w Biurze Technicznym",
-  "job2Sub": "2023   ·   Konsorcjum Ferrovial + Budimex + Estudio Lamela",
+  "partnersText": "xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx.",
+  "job2Title": "Główny Architekt w xxx",
+  "job2Sub": "2023   ·   xxx, xxx, xxx",
   "job2Bullets": [
-    "Nadzór nad opracowywaniem projektów budowlanych i wykonawczych dla obiektów kubaturowych rozbudowy lotniska im. Fryderyka Chopina w Warszawie.",
+    "Nadzór nad opracowywaniem projektów budowlanych i wykonawczych dla obiektów kubaturowych xxx, xxx, xxx.",
     "Wdrażanie procedur kontroli jakości dokumentacji oraz nadzór nad terminową realizacją kontraktu."
   ],
   "job3Title": "Asystent Architekta / Młodszy Projektant",
-  "job3Sub": "1999-2003   ·   Budimex",
+  "job3Sub": "1999-2003   ·   xxx, xxx, xxx",
   "job3Bullets": [
-    "Opracowywanie dokumentacji do pozwolenia na budowę dla firm: Polskie Porty Lotnicze, Coca-Cola, Procter & Gamble.",
+    "Opracowywanie dokumentacji do pozwolenia na budowę dla firm: xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx.",
     "Tworzenie koncepcji architektonicznych, wizualizacji oraz ofert przetargowych."
   ],
   "lblEdu": "WYKSZTAŁCENIE",
   "lblEduSchool": "Uczelnia:",
-  "valEduSchool": "Politechnika Warszawska",
+  "valEduSchool": "xxx, xxx, xxx",
   "lblEduField": "Kierunek:",
-  "valEduField": "Architektura i Urbanistyka",
+  "valEduField": "xxx, xxx, xxx",
   "lblEduDegree": "Tytuł zawodowy:",
-  "valEduDegree": "magister inżynier architekt",
+  "valEduDegree": "xxx, xxx, xxx",
   "lblLicenses": "UPRAWNIENIA",
   "licensesBullets": [
-    "Uprawnienia budowlane do projektowania bez ograniczeń w specjalności architektonicznej",
+    "Uprawnienia budowlane do projektowania bez ograniczeń w specjalności architektonicznej.",
     "Członek IARP, MOIA"
   ],
   "lblCompetencies": "KOMPETENCJE",
@@ -1160,8 +1177,7 @@ const DATA_PL = {
   "lblSoftware": "OPROGRAMOWANIE",
   "swGroup1": "BIM / CAD",
   "swList1": [
-    "Revit",
-    "Revit Family Editor",
+    "Revit + familie",
     "AutoCAD"
   ],
   "swGroup2": "3D / RENDER",
@@ -1173,8 +1189,7 @@ const DATA_PL = {
   ],
   "swGroup3": "AI / AUTOMATYZACJA",
   "swList3": [
-    "agenci AI",
-    "Python, Ruby"
+    "AI + Python"
   ],
   "lblOther": "INNE",
   "otherBullets": [
@@ -1184,24 +1199,24 @@ const DATA_PL = {
   "rodoText": "Wyrażam zgodę na przetwarzanie moich danych osobowych zawartych w niniejszym CV dla potrzeb niezbędnych do realizacji obecnego procesu rekrutacji oraz przyszłych procesów rekrutacyjnych przez okres 12 miesięcy od dnia jego otrzymania."
 };
 const DATA_EN = {
-  "mainTitle": "WOJCIECH GOŁĄB, Architect",
+  "mainTitle": "JAN KOWALSKI, Architect",
   "mainSubtitle": "Licensed Architect · IARP Member · Senior Experience",
   "mainScopeLines": [
     "investment process, architectural design, conceptual, building and technical designs,",
     "administrative procedures, multidisciplinary coordination, on-site supervision."
   ],
-  "contactPhone": "+48 889 536 880",
-  "contactEmail": "kontakt@projektar.pl",
+  "contactPhone": "+48 600 600 600",
+  "contactEmail": "jan.kowalski@op.pl",
   "contactLocation": "Warsaw, Poland",
   "lblProfile": "PROFESSIONAL PROFILE",
-  "profileText": "I manage projects from feasibility studies and administrative procedures, through design documentation and team coordination, to architectural supervision. Specialized in large-scale investments, including residential developments.",
+  "profileText": "I lead building projects from feasibility and permits, through design documentation and multi-branch coordination, to site supervision. Specialized in large investments, including residential developments.",
   "lblExp": "EXPERIENCE",
   "job1Title": "Owner / Lead Designer — Architect",
   "job1Sub": "2003–present   ·   Private Practice",
   "metric1Num": "1300+",
-  "metric1Text": "designed residential units in Warsaw",
+  "metric1Text": "designed residential units in xxx, xxx, xxx.",
   "metric2Num": "70+",
-  "metric2Text": "completed administrative procedures for building permits and zoning decisions",
+  "metric2Text": "completed administrative procedures for building permits and zoning decisions.",
   "job1Bullets": [
     "Leading architectural projects of building structures as principal and co-designer.",
     "Comprehensive preparation of project and permit documentation.",
@@ -1209,29 +1224,29 @@ const DATA_EN = {
     "Author's architectural on-site supervision."
   ],
   "collabIntro": "Collaboration with companies including:",
-  "partnersText": "Dom Development, Budimex, Volumetric, Dantex, Auchan",
-  "job2Title": "Chief Architect at Technical Office",
-  "job2Sub": "2023   ·   Consortium of Ferrovial + Budimex + Estudio Lamela",
+  "partnersText": "xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx.",
+  "job2Title": "Chief Architect at xxx",
+  "job2Sub": "2023   ·   xxx, xxx, xxx",
   "job2Bullets": [
-    "Supervision of building and detailed design development for the expansion of Fryderyk Chopin Airport in Warsaw.",
+    "Supervision of building and detailed design development for kubature facilities xxx, xxx, xxx.",
     "Implementation of documentation quality control procedures and supervision of contract deadlines."
   ],
   "job3Title": "Assistant Architect / Junior Designer",
-  "job3Sub": "1999–2003   ·   Budimex",
+  "job3Sub": "1999–2003   ·   xxx, xxx, xxx",
   "job3Bullets": [
-    "Development of building permit documentation for companies: Polish Airports (PPL), Coca-Cola, Procter & Gamble.",
-    "Architectural concepts, visualizations, and tender proposals."
+    "Development of building permit documentation for companies: xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx.",
+    "Creation of architectural concepts, visualizations, and tender proposals."
   ],
   "lblEdu": "EDUCATION",
   "lblEduSchool": "University:",
-  "valEduSchool": "Warsaw University of Technology",
+  "valEduSchool": "xxx, xxx, xxx",
   "lblEduField": "Major:",
-  "valEduField": "Faculty of Architecture",
+  "valEduField": "xxx, xxx, xxx",
   "lblEduDegree": "Degree:",
-  "valEduDegree": "Master of Science, Engineer, Architect",
+  "valEduDegree": "xxx, xxx, xxx",
   "lblLicenses": "LICENSES & MEMBERSHIPS",
   "licensesBullets": [
-    "Building license for architectural design without restrictions",
+    "Building license for architectural design without restrictions.",
     "Member of the Polish Chamber of Architects (IARP, MOIA)"
   ],
   "lblCompetencies": "CORE COMPETENCIES",
@@ -1244,8 +1259,7 @@ const DATA_EN = {
   "lblSoftware": "SOFTWARE & TOOLS",
   "swGroup1": "BIM / CAD",
   "swList1": [
-    "Revit",
-    "Revit Family Editor",
+    "Revit + families",
     "AutoCAD"
   ],
   "swGroup2": "3D / RENDER",
@@ -1257,8 +1271,7 @@ const DATA_EN = {
   ],
   "swGroup3": "AI / AUTOMATION",
   "swList3": [
-    "AI agents",
-    "Python, Ruby"
+    "AI + Python"
   ],
   "lblOther": "ADDITIONAL",
   "otherBullets": [
@@ -1270,9 +1283,9 @@ const DATA_EN = {
 const THEME_SETTINGS = {
   "isSingleAccent": false,
   "singleColor": "#0284c7",
-  "colorIcons": "#ea580c",
-  "colorMetrics": "#0284c7",
-  "colorTitles": "#65707e"
+  "colorIcons": "#475569",
+  "colorMetrics": "#0f172a",
+  "colorTitles": "#64748b"
 };
 
 function applyThemeColors() {
