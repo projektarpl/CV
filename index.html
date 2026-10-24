@@ -1,0 +1,1529 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CV</title>
+
+<!-- Google Fonts: Outfit & IBM Plex Sans -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Biblioteki do bezpośredniego generowania PDF na dysk -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: radial-gradient(circle at 50% 10%, #f1f5f9 0%, #e2e8f0 100%);
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 24px 0 50px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Górny pasek dla osób odwiedzających stronę */
+.action-bar-wrapper {
+  position: sticky;
+  top: 14px;
+  z-index: 999;
+  margin-bottom: 20px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.action-pill-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 9999px;
+  padding: 6px;
+  box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.10), 0 4px 12px -2px rgba(15, 23, 42, 0.05);
+}
+
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  white-space: nowrap;
+}
+
+.pill-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #94a3b8;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.pill-btn.primary {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.22);
+}
+
+.pill-btn.primary:hover {
+  background: #1e293b;
+  border-color: #1e293b;
+}
+
+.lang-toggle-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  background: #f1f5f9;
+  border-radius: 9999px;
+  padding: 3px;
+  border: 1px solid #e2e8f0;
+  box-sizing: border-box;
+}
+
+.lang-btn {
+  border: none;
+  background: transparent;
+  height: 26px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.lang-btn.active {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.pill-divider {
+  width: 1px;
+  height: 20px;
+  background: #e2e8f0;
+  margin: 0 2px;
+}
+
+/* Arkusz A4 */
+.cv-page {
+  width: 210mm;
+  height: 297mm;
+  min-width: 210mm;
+  min-height: 297mm;
+  max-width: 210mm;
+  max-height: 297mm;
+  background-color: #ffffff;
+  padding: 15mm;
+  box-shadow: 0 20px 48px -10px rgba(15, 23, 42, 0.16), 0 6px 18px -3px rgba(15, 23, 42, 0.08);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cad-box {
+  border: 0.25mm solid #cbd5e1;
+  border-radius: 3.5mm;
+  background-color: #ffffff;
+  position: relative;
+  box-shadow: 0 1.5px 4px -1px rgba(15, 23, 42, 0.05), 0 0.5px 1.5px rgba(15, 23, 42, 0.03);
+}
+
+.header-card {
+  width: 180mm;
+  height: 49.00mm;
+  margin-bottom: 2.96mm;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.header-zone-title {
+  height: 13.95mm;
+  padding: 0 4.80mm;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(180deg, #f8fafc 0%, #fbfcfd 100%);
+}
+
+.main-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 20.16pt;
+  font-weight: 500;
+  color: #0f172a;
+  letter-spacing: -0.015em;
+  line-height: 1;
+}
+
+.cad-h-line {
+  height: 0;
+  border-top: 0.25mm solid #e2e8f0;
+  width: 100%;
+}
+
+.header-zone-scope {
+  height: 25.06mm;
+  padding: 1.8mm 4.80mm 0 4.80mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: #ffffff;
+}
+
+.main-subtitle {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14.16pt;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.15;
+  margin-bottom: 1.5mm;
+}
+
+.main-scope {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12.24pt;
+  font-weight: 400;
+  color: #1e293b;
+  line-height: 5.33mm;
+}
+
+.header-zone-contact {
+  height: 9.99mm;
+  padding: 0 4.80mm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+}
+
+.contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.8mm;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12.24pt;
+  font-weight: 400;
+  color: #1e293b;
+}
+
+.contact-icon {
+  width: 14px;
+  height: 14px;
+  color: #475569;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-center { justify-content: center; }
+.contact-right { justify-content: flex-end; }
+
+.columns-container {
+  width: 180mm;
+  height: 202.95mm;
+  display: flex;
+  gap: 2.96mm;
+  margin-bottom: 3.04mm;
+}
+
+.section-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 8.16pt;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #64748b;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  margin-bottom: 2.2mm;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.left-column {
+  width: 110.50mm;
+  height: 202.95mm;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.left-sec-profile {
+  height: 29.04mm;
+  padding: 3.2mm 4.80mm 2.0mm 4.80mm;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.profile-body-text {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 10.08pt;
+  font-weight: 400;
+  color: #1e293b;
+  line-height: 4.32mm;
+  text-align: left;
+}
+
+.left-sec-experience {
+  height: 147.91mm;
+  padding: 3.2mm 4.80mm 2.0mm 4.80mm;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+
+.job-group { margin-bottom: 2.6mm; }
+.job-group:last-child { margin-bottom: 0; }
+
+.job-headline {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 10.08pt;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.15;
+}
+
+.job-subline {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 10.08pt;
+  font-weight: 400;
+  color: #475569;
+  line-height: 1.15;
+  margin-top: 0.8mm;
+  margin-bottom: 1.8mm;
+}
+
+.metrics-table {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4mm;
+  margin-bottom: 2.0mm;
+}
+
+.metric-item {
+  display: grid;
+  grid-template-columns: 21.0mm 1fr;
+  column-gap: 2.8mm;
+  align-items: baseline;
+}
+
+.metric-value {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14.16pt;
+  font-weight: 500;
+  color: #0f172a;
+  line-height: 1.05;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.metric-text {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 10.08pt;
+  font-weight: 400;
+  color: #1e293b;
+  line-height: 4.32mm;
+  text-align: left;
+}
+
+.dot-bullet-list { list-style: none; }
+.dot-bullet-list > li {
+  position: relative;
+  padding-left: 4.2mm;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 10.08pt;
+  font-weight: 400;
+  color: #1e293b;
+  line-height: 4.32mm;
+  margin-bottom: 0.9mm;
+  text-align: left;
+}
+
+.dot-bullet-list > li::before {
+  content: "·";
+  position: absolute;
+  left: 0.5mm;
+  font-family: 'IBM Plex Sans', Symbol, sans-serif;
+  font-size: 10.56pt;
+  line-height: 4.32mm;
+  color: #0f172a;
+}
+
+.partners-row {
+  margin-top: 0.5mm;
+  line-height: 4.2mm;
+  color: #334155;
+  text-align: left;
+}
+
+.left-sec-education {
+  height: 26.00mm;
+  padding: 3.2mm 4.80mm 2.0mm 4.80mm;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.edu-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 3.5mm;
+  row-gap: 1.0mm;
+  align-items: baseline;
+}
+
+.edu-field-label {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 10.08pt;
+  font-weight: 400;
+  color: #475569;
+  line-height: 4.32mm;
+  white-space: nowrap;
+}
+
+.edu-field-value {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 10.08pt;
+  font-weight: 500;
+  color: #0f172a;
+  line-height: 4.32mm;
+  text-align: left;
+}
+
+.right-column {
+  width: 66.50mm;
+  height: 202.95mm;
+  display: flex;
+  flex-direction: column;
+}
+
+.square-bullet-list { list-style: none; }
+.square-bullet-list > li {
+  position: relative;
+  padding-left: 4.7mm;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 10.08pt;
+  font-weight: 400;
+  color: #1e293b;
+  line-height: 4.32mm;
+  margin-bottom: 1.1mm;
+  text-align: left;
+}
+
+.square-bullet-list > li::before {
+  content: "▪";
+  position: absolute;
+  left: 0.2mm;
+  font-family: Arial, sans-serif;
+  font-size: 9.84pt;
+  line-height: 4.32mm;
+  color: #0f172a;
+}
+
+.right-box-uprawnienia {
+  height: 29.04mm;
+  padding: 3.2mm 4.80mm 2.0mm 4.80mm;
+  margin-bottom: 2.96mm;
+  overflow: hidden;
+}
+
+.right-box-kompetencje {
+  height: 65.45mm;
+  padding: 3.2mm 4.80mm 2.0mm 4.80mm;
+  margin-bottom: 3.05mm;
+  overflow: hidden;
+}
+
+.right-box-oprogramowanie {
+  height: 73.49mm;
+  padding: 3.2mm 4.80mm 2.0mm 4.80mm;
+  margin-bottom: 2.96mm;
+  overflow: hidden;
+}
+
+.software-group { margin-bottom: 1.8mm; }
+.software-group:last-child { margin-bottom: 0; }
+
+.software-group-title {
+  font-family: Arial, 'IBM Plex Sans', sans-serif;
+  font-size: 9.84pt;
+  font-weight: 600;
+  color: #334155;
+  line-height: 1.2;
+  margin-bottom: 1.0mm;
+}
+
+.software-group .square-bullet-list > li { margin-bottom: 0.6mm; }
+
+.right-box-inne {
+  height: 26.00mm;
+  padding: 3.2mm 4.80mm 2.0mm 4.80mm;
+  overflow: hidden;
+}
+
+.rodo-footer {
+  width: 180mm;
+  height: 8.98mm;
+  padding: 1.2mm 4.80mm;
+  display: flex;
+  align-items: center;
+  background: #f8fafc;
+}
+
+.rodo-text {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 8.16pt;
+  font-weight: 400;
+  color: #64748b;
+  line-height: 3.55mm;
+  text-align: left;
+  width: 100%;
+}
+
+
+/* ========================================================
+   NAKŁADKA GENEROWANIA PDF A4
+   ======================================================== */
+.pdf-export-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 99999;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  color: #ffffff;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.pdf-export-overlay .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3.5px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #38bdf8;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+body.pdf-export-mode .pdf-export-overlay {
+  display: flex !important;
+}
+
+/* ========================================================
+   RESPONSYWNOŚĆ MOBILNA (CZYTELNY WIDOK NA TELEFONACH)
+   DZIAŁA NA EKRANACH <= 850px I AUTOMATYCZNIE WYŁĄCZA SIĘ
+   W TRYBIE GENEROWANIA PDF ORAZ PODCZAS DRUKU A4
+   ======================================================== */
+@media screen and (max-width: 850px) {
+  body:not(.pdf-export-mode) {
+    padding: 10px 10px 84px 10px !important;
+    background: #f1f5f9 !important;
+    min-height: 100vh;
+  }
+
+  body:not(.pdf-export-mode) .action-bar-wrapper {
+    top: 6px !important;
+    width: 100% !important;
+    margin-bottom: 14px !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  body:not(.pdf-export-mode) .action-pill-bar {
+    width: 100% !important;
+    max-width: 480px !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    padding: 6px !important;
+    border-radius: 20px !important;
+  }
+
+  body:not(.pdf-export-mode) .pill-divider {
+    display: none !important;
+  }
+
+  body:not(.pdf-export-mode) .cv-page {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 580px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 14px !important;
+    margin: 0 auto !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  body:not(.pdf-export-mode) .cad-box {
+    border-radius: 12px !important;
+    border-width: 1px !important;
+    overflow: hidden !important;
+  }
+
+  /* 1. Header */
+  body:not(.pdf-export-mode) .header-card {
+    width: 100% !important;
+    height: auto !important;
+    margin-bottom: 0 !important;
+    overflow: hidden !important;
+    border-radius: 12px !important;
+  }
+
+  body:not(.pdf-export-mode) .header-zone-title {
+    height: auto !important;
+    padding: 16px 14px !important;
+    border-top-left-radius: 11px !important;
+    border-top-right-radius: 11px !important;
+  }
+
+  body:not(.pdf-export-mode) .main-title {
+    font-size: 19px !important;
+    line-height: 1.25 !important;
+  }
+
+  body:not(.pdf-export-mode) .header-zone-scope {
+    height: auto !important;
+    padding: 12px 14px !important;
+  }
+
+  body:not(.pdf-export-mode) .main-subtitle {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    margin-bottom: 6px !important;
+  }
+
+  body:not(.pdf-export-mode) .main-scope {
+    font-size: 12.5px !important;
+    line-height: 1.55 !important;
+  }
+
+  body:not(.pdf-export-mode) .main-scope div {
+    display: inline !important;
+  }
+
+  body:not(.pdf-export-mode) .main-scope div:not(:last-child)::after {
+    content: " " !important;
+  }
+
+  body:not(.pdf-export-mode) .header-zone-contact {
+    height: auto !important;
+    padding: 12px 14px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    border-bottom-left-radius: 11px !important;
+    border-bottom-right-radius: 11px !important;
+  }
+
+  body:not(.pdf-export-mode) .contact-item {
+    font-size: 12.5px !important;
+    gap: 8px !important;
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+
+  /* 2. Dwie kolumny układają się pionowo w jedną czytelną kolumnę */
+  body:not(.pdf-export-mode) .columns-container {
+    width: 100% !important;
+    height: auto !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    margin-bottom: 0 !important;
+  }
+
+  body:not(.pdf-export-mode) .left-column,
+  body:not(.pdf-export-mode) .right-column {
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    gap: 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* Karty i sekcje */
+  body:not(.pdf-export-mode) .left-sec-profile,
+  body:not(.pdf-export-mode) .left-sec-experience,
+  body:not(.pdf-export-mode) .left-sec-education,
+  body:not(.pdf-export-mode) .right-box-uprawnienia,
+  body:not(.pdf-export-mode) .right-box-kompetencje,
+  body:not(.pdf-export-mode) .right-box-oprogramowanie,
+  body:not(.pdf-export-mode) .right-box-inne {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 14px 14px !important;
+    overflow: hidden !important;
+    margin-bottom: 0 !important;
+    border-radius: 12px !important;
+  }
+
+  body:not(.pdf-export-mode) .section-title {
+    font-size: 11px !important;
+    margin-bottom: 8px !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  body:not(.pdf-export-mode) .profile-body-text {
+    font-size: 13px !important;
+    line-height: 1.55 !important;
+  }
+
+  body:not(.pdf-export-mode) .job-group {
+    margin-bottom: 16px !important;
+  }
+
+  body:not(.pdf-export-mode) .job-headline {
+    font-size: 13.5px !important;
+    line-height: 1.3 !important;
+  }
+
+  body:not(.pdf-export-mode) .job-subline {
+    font-size: 12px !important;
+    margin-top: 3px !important;
+    margin-bottom: 8px !important;
+  }
+
+  body:not(.pdf-export-mode) .metrics-table {
+    gap: 6px !important;
+    margin-bottom: 10px !important;
+  }
+
+  body:not(.pdf-export-mode) .metric-item {
+    grid-template-columns: 60px 1fr !important;
+    column-gap: 10px !important;
+    align-items: baseline !important;
+  }
+
+  body:not(.pdf-export-mode) .metric-value {
+    font-size: 18px !important;
+    text-align: right !important;
+  }
+
+  body:not(.pdf-export-mode) .metric-text {
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  body:not(.pdf-export-mode) .dot-bullet-list > li,
+  body:not(.pdf-export-mode) .square-bullet-list > li {
+    font-size: 12.5px !important;
+    line-height: 1.5 !important;
+    padding-left: 14px !important;
+    margin-bottom: 5px !important;
+  }
+
+  body:not(.pdf-export-mode) .dot-bullet-list > li::before {
+    left: 2px !important;
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+  }
+
+  body:not(.pdf-export-mode) .square-bullet-list > li::before {
+    left: 2px !important;
+    font-size: 11px !important;
+    line-height: 1.4 !important;
+  }
+
+  body:not(.pdf-export-mode) .partners-row {
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+    margin-top: 6px !important;
+  }
+
+  body:not(.pdf-export-mode) .edu-grid {
+    column-gap: 12px !important;
+    row-gap: 5px !important;
+  }
+
+  body:not(.pdf-export-mode) .edu-field-label,
+  body:not(.pdf-export-mode) .edu-field-value {
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  body:not(.pdf-export-mode) .software-group {
+    margin-bottom: 10px !important;
+  }
+
+  body:not(.pdf-export-mode) .software-group-title {
+    font-size: 12px !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* 3. Stopka RODO */
+  body:not(.pdf-export-mode) .rodo-footer {
+    width: 100% !important;
+    height: auto !important;
+    padding: 10px 14px !important;
+    border-radius: 12px !important;
+  }
+
+  body:not(.pdf-export-mode) .rodo-text {
+    font-size: 10px !important;
+    line-height: 1.45 !important;
+  }
+
+  /* 4. Dolny nieruchomy pasek eksportu */
+  body:not(.pdf-export-mode) .bottom-fixed-dock {
+    width: calc(100% - 20px) !important;
+    max-width: 440px !important;
+    padding: 6px 6px 6px 12px !important;
+    gap: 8px !important;
+    bottom: 10px !important;
+  }
+
+  body:not(.pdf-export-mode) .dock-info-label {
+    font-size: 11px !important;
+  }
+
+  body:not(.pdf-export-mode) .btn-dock-export {
+    height: 34px !important;
+    padding: 0 12px !important;
+    font-size: 11px !important;
+  }
+
+  /* 5. Okno modalne edytora */
+  body:not(.pdf-export-mode) .modal-backdrop {
+    padding: 8px !important;
+  }
+
+  body:not(.pdf-export-mode) .modal-container {
+    width: 100% !important;
+    height: 94vh !important;
+    max-width: 100% !important;
+    border-radius: 16px !important;
+  }
+
+  body:not(.pdf-export-mode) .modal-sidebar {
+    width: 52px !important;
+    padding: 10px 0 !important;
+    gap: 8px !important;
+  }
+
+  body:not(.pdf-export-mode) .tab-icon-btn {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  body:not(.pdf-export-mode) .modal-content-area {
+    padding: 14px !important;
+  }
+
+  body:not(.pdf-export-mode) .form-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media print {
+  body {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .action-bar-wrapper { display: none !important; }
+  .cv-page {
+    box-shadow: none !important;
+    margin: 0 !important;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="action-bar-wrapper" id="topActionBar">
+  <div class="action-pill-bar">
+    <div class="lang-toggle-pill">
+      <button type="button" class="lang-btn active" id="btnLangPL" onclick="setLanguage('PL')">POL</button>
+      <button type="button" class="lang-btn" id="btnLangEN" onclick="setLanguage('EN')">ENG</button>
+    </div>
+
+    <div class="pill-divider"></div>
+
+    <button type="button" class="pill-btn primary" id="btnDownloadPDF" onclick="downloadPdfDirectly()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      <span id="labelDownloadPdf">Pobierz PDF (POL)</span>
+    </button>
+
+    <button type="button" class="pill-btn" id="btnPrint" onclick="window.print()" title="Drukuj / Print">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+      <span id="labelPrint">Drukuj</span>
+    </button>
+  </div>
+</div>
+
+<div class="cv-page" id="cvA4Sheet">
+  
+  <header class="cad-box header-card">
+    <div class="header-zone-title">
+      <h1 class="main-title" id="valMainTitle">JAN KOWALSKI, architekt</h1>
+    </div>
+    
+    <div class="cad-h-line"></div>
+    
+    <div class="header-zone-scope">
+      <div class="main-subtitle" id="valMainSubtitle">architekt uprawniony · członek IARP · wieloletnie doświadczenie</div>
+      <div class="main-scope" id="valMainScope">
+        <div>proces inwestycyjny, projektowanie architektoniczne, projekty koncepcyjne, budowlane</div>
+        <div>i techniczne, procedury w organach administracji, koordynacja, nadzór.</div>
+      </div>
+    </div>
+    
+    <div class="cad-h-line"></div>
+    
+    <div class="header-zone-contact">
+      <div class="contact-item">
+        <span class="contact-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        </span>
+        <span id="valContactPhone">+48 600 600 600</span>
+      </div>
+
+      <div class="contact-item contact-center">
+        <span class="contact-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+        </span>
+        <span id="valContactEmail">jan.kowalski@op.pl</span>
+      </div>
+
+      <div class="contact-item contact-right">
+        <span class="contact-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        </span>
+        <span id="valContactLocation">Warszawa, Polska</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="columns-container">
+    <div class="cad-box left-column">
+      
+      <div class="left-sec-profile">
+        <div class="section-title" id="lblProfileTitle">PROFIL ZAWODOWY</div>
+        <p class="profile-body-text" id="valProfileText">
+          Prowadzę projekty obiektów kubaturowych od analiz i procedur administracyjnych, przez dokumentację projektową i koordynację wielobranżową, po nadzór autorski. Specjalizuję się w dużych inwestycjach, w tym zabudowie mieszkaniowej.
+        </p>
+      </div>
+
+      <div class="cad-h-line"></div>
+
+      <div class="left-sec-experience">
+        <div class="section-title" id="lblExpTitle">DOŚWIADCZENIE</div>
+
+        <div class="job-group">
+          <div class="job-headline" id="valJob1Title">Właściciel / Główny Projektant — Architekt</div>
+          <div class="job-subline" id="valJob1Sub">2003-obecnie &nbsp;·&nbsp; Własna działalność</div>
+
+          <div class="metrics-table">
+            <div class="metric-item">
+              <div class="metric-value" id="valMetric1Num">1300+</div>
+              <div class="metric-text" id="valMetric1Text">zaprojektowanych mieszkań w xxx, xxx, xxx.</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-value" id="valMetric2Num">70+</div>
+              <div class="metric-text" id="valMetric2Text">przeprowadzonych postępowań administracyjnych dotyczących pozwoleń na budowę i warunków zabudowy.</div>
+            </div>
+          </div>
+
+          <ul class="dot-bullet-list" id="valJob1Bullets">
+            <li>Prowadzenie projektów architektonicznych obiektów kubaturowych jako główny projektant i współprojektant.</li>
+            <li>Kompleksowe przygotowanie dokumentacji projektowej.</li>
+            <li>Organizacja i koordynacja zespołów projektowych.</li>
+            <li>Nadzory autorskie.</li>
+            <li>
+              Współpraca m.in. z firmami:
+              <div class="partners-row" id="valPartnersText">xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx.</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="job-group">
+          <div class="job-headline" id="valJob2Title">Główny Architekt w xxx</div>
+          <div class="job-subline" id="valJob2Sub">2023 &nbsp;·&nbsp; xxx, xxx, xxx</div>
+          <ul class="dot-bullet-list" id="valJob2Bullets">
+            <li>Nadzór nad opracowywaniem projektów budowlanych i wykonawczych dla obiektów kubaturowych xxx, xxx, xxx.</li>
+            <li>Wdrażanie procedur kontroli jakości dokumentacji oraz nadzór nad terminową realizacją kontraktu.</li>
+          </ul>
+        </div>
+
+        <div class="job-group">
+          <div class="job-headline" id="valJob3Title">Asystent Architekta / Młodszy Projektant</div>
+          <div class="job-subline" id="valJob3Sub">1999-2003 &nbsp;·&nbsp; xxx, xxx, xxx</div>
+          <ul class="dot-bullet-list" id="valJob3Bullets">
+            <li>Opracowywanie dokumentacji do pozwolenia na budowę dla firm: xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx.</li>
+            <li>Tworzenie koncepcji architektonicznych, wizualizacji oraz ofert przetargowych.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cad-h-line"></div>
+
+      <div class="left-sec-education">
+        <div class="section-title" id="lblEduTitle">WYKSZTAŁCENIE</div>
+        <div class="edu-grid">
+          <div class="edu-field-label" id="lblEduSchool">Uczelnia:</div>
+          <div class="edu-field-value" id="valEduSchool">xxx, xxx, xxx</div>
+
+          <div class="edu-field-label" id="lblEduField">Kierunek:</div>
+          <div class="edu-field-value" id="valEduField">xxx, xxx, xxx</div>
+
+          <div class="edu-field-label" id="lblEduDegree">Tytuł zawodowy:</div>
+          <div class="edu-field-value" id="valEduDegree">xxx, xxx, xxx</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="right-column">
+      <div class="cad-box right-box-uprawnienia">
+        <div class="section-title" id="lblLicensesTitle">UPRAWNIENIA</div>
+        <ul class="square-bullet-list" id="valLicensesBullets">
+          <li>Uprawnienia budowlane do projektowania bez ograniczeń w specjalności architektonicznej.</li>
+          <li>Członek IARP, MOIA</li>
+        </ul>
+      </div>
+
+      <div class="cad-box right-box-kompetencje">
+        <div class="section-title" id="lblCompetenciesTitle">KOMPETENCJE</div>
+        <ul class="square-bullet-list" id="valCompetenciesBullets">
+          <li>Znajomość procesu inwestycyjnego i budowlanego w Polsce</li>
+          <li>Znajomość procedur administracyjnych</li>
+          <li>Znajomość prawa budowlanego i przepisów dotyczących ochrony przeciwpożarowej, BHP i wymagań higieniczno-sanitarnych</li>
+          <li>Samodzielność w prowadzeniu projektów</li>
+        </ul>
+      </div>
+
+      <div class="cad-box right-box-oprogramowanie">
+        <div class="section-title" id="lblSoftwareTitle">OPROGRAMOWANIE</div>
+        
+        <div class="software-group">
+          <div class="software-group-title" id="lblSwGroup1">BIM / CAD</div>
+          <ul class="square-bullet-list" id="valSwList1">
+            <li>Revit + familie</li>
+            <li>AutoCAD</li>
+          </ul>
+        </div>
+
+        <div class="software-group">
+          <div class="software-group-title" id="lblSwGroup2">3D / RENDER</div>
+          <ul class="square-bullet-list" id="valSwList2">
+            <li>Blender</li>
+            <li>3ds Max</li>
+            <li>SketchUp</li>
+            <li>D5 Render</li>
+          </ul>
+        </div>
+
+        <div class="software-group">
+          <div class="software-group-title" id="lblSwGroup3">AI / AUTOMATYZACJA</div>
+          <ul class="square-bullet-list" id="valSwList3">
+            <li>AI + Python</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cad-box right-box-inne">
+        <div class="section-title" id="lblOtherTitle">INNE</div>
+        <ul class="square-bullet-list" id="valOtherBullets">
+          <li>Znajomość języka angielskiego na poziomie B2</li>
+          <li>Prawo jazdy kategorii B</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <footer class="cad-box rodo-footer">
+    <div class="rodo-text" id="valRodoText">
+      Wyrażam zgodę na przetwarzanie moich danych osobowych zawartych w niniejszym CV dla potrzeb niezbędnych do realizacji obecnego procesu rekrutacji oraz przyszłych procesów rekrutacyjnych przez okres 12 miesięcy od dnia jego otrzymania.
+    </div>
+  </footer>
+
+</div>
+
+<script>
+const DATA_PL = {
+  "mainTitle": "WOJCIECH GOŁĄB, architekt",
+  "mainSubtitle": "architekt uprawniony · członek IARP · wieloletnie doświadczenie",
+  "mainScopeLines": [
+    "proces inwestycyjny, projektowanie architektoniczne, projekty koncepcyjne, budowlane",
+    "i techniczne, procedury w organach administracji, koordynacja, nadzór"
+  ],
+  "contactPhone": "+48 889 536 880",
+  "contactEmail": "kontakt@projektar.pl",
+  "contactLocation": "Warszawa, Polska",
+  "lblProfile": "PROFIL ZAWODOWY",
+  "profileText": "Prowadzę projekty obiektów kubaturowych od analiz i procedur administracyjnych, przez dokumentację projektową i koordynację wielobranżową, po nadzór autorski. Specjalizuję się w dużych inwestycjach, w tym zabudowie mieszkaniowej.",
+  "lblExp": "DOŚWIADCZENIE",
+  "job1Title": "Właściciel / Główny Projektant — Architekt",
+  "job1Sub": "2003-obecnie   ·   Własna działalność",
+  "metric1Num": "1300+",
+  "metric1Text": "zaprojektowanych mieszkań w Warszawie",
+  "metric2Num": "70+",
+  "metric2Text": "przeprowadzonych postępowań administracyjnych dotyczących pozwoleń na budowę i warunków zabudowy",
+  "job1Bullets": [
+    "Prowadzenie projektów architektonicznych obiektów kubaturowych jako główny projektant i współprojektant.",
+    "Kompleksowe przygotowanie dokumentacji projektowej.",
+    "Organizacja i koordynacja zespołów projektowych.",
+    "Nadzory autorskie."
+  ],
+  "collabIntro": "Współpraca m.in. z firmami:",
+  "partnersText": "Dom Development, Budimex, Volumetric, Dantex, Auchan",
+  "job2Title": "Główny Architekt w Biurze Technicznym",
+  "job2Sub": "2023   ·   Konsorcjum Ferrovial + Budimex + Estudio Lamela",
+  "job2Bullets": [
+    "Nadzór nad opracowywaniem projektów budowlanych i wykonawczych dla obiektów kubaturowych rozbudowy lotniska im. Fryderyka Chopina w Warszawie.",
+    "Wdrażanie procedur kontroli jakości dokumentacji oraz nadzór nad terminową realizacją kontraktu."
+  ],
+  "job3Title": "Asystent Architekta / Młodszy Projektant",
+  "job3Sub": "1999-2003   ·   Budimex",
+  "job3Bullets": [
+    "Opracowywanie dokumentacji do pozwolenia na budowę dla firm: Polskie Porty Lotnicze, Coca-Cola, Procter & Gamble.",
+    "Tworzenie koncepcji architektonicznych, wizualizacji oraz ofert przetargowych."
+  ],
+  "lblEdu": "WYKSZTAŁCENIE",
+  "lblEduSchool": "Uczelnia:",
+  "valEduSchool": "Politechnika Warszawska",
+  "lblEduField": "Kierunek:",
+  "valEduField": "Architektura i Urbanistyka",
+  "lblEduDegree": "Tytuł zawodowy:",
+  "valEduDegree": "magister inżynier architekt",
+  "lblLicenses": "UPRAWNIENIA",
+  "licensesBullets": [
+    "Uprawnienia budowlane do projektowania bez ograniczeń w specjalności architektonicznej",
+    "Członek IARP, MOIA"
+  ],
+  "lblCompetencies": "KOMPETENCJE",
+  "competenciesBullets": [
+    "Znajomość procesu inwestycyjnego i budowlanego w Polsce",
+    "Znajomość procedur administracyjnych",
+    "Znajomość prawa budowlanego i przepisów dotyczących ochrony przeciwpożarowej, BHP i wymagań higieniczno-sanitarnych",
+    "Samodzielność w prowadzeniu projektów"
+  ],
+  "lblSoftware": "OPROGRAMOWANIE",
+  "swGroup1": "BIM / CAD",
+  "swList1": [
+    "Revit",
+    "Revit Family Editor",
+    "AutoCAD"
+  ],
+  "swGroup2": "3D / RENDER",
+  "swList2": [
+    "Blender",
+    "3ds Max",
+    "SketchUp",
+    "D5 Render"
+  ],
+  "swGroup3": "AI / AUTOMATYZACJA",
+  "swList3": [
+    "agenci AI",
+    "Python, Ruby"
+  ],
+  "lblOther": "INNE",
+  "otherBullets": [
+    "Znajomość języka angielskiego na poziomie B2",
+    "Prawo jazdy kategorii B"
+  ],
+  "rodoText": "Wyrażam zgodę na przetwarzanie moich danych osobowych zawartych w niniejszym CV dla potrzeb niezbędnych do realizacji obecnego procesu rekrutacji oraz przyszłych procesów rekrutacyjnych przez okres 12 miesięcy od dnia jego otrzymania."
+};
+const DATA_EN = {
+  "mainTitle": "WOJCIECH GOŁĄB, Architect",
+  "mainSubtitle": "Licensed Architect · IARP Member · Senior Experience",
+  "mainScopeLines": [
+    "investment process, architectural design, conceptual, building and technical designs,",
+    "administrative procedures, multidisciplinary coordination, on-site supervision."
+  ],
+  "contactPhone": "+48 889 536 880",
+  "contactEmail": "kontakt@projektar.pl",
+  "contactLocation": "Warsaw, Poland",
+  "lblProfile": "PROFESSIONAL PROFILE",
+  "profileText": "I manage projects from feasibility studies and administrative procedures, through design documentation and team coordination, to architectural supervision. Specialized in large-scale investments, including residential developments.",
+  "lblExp": "EXPERIENCE",
+  "job1Title": "Owner / Lead Designer — Architect",
+  "job1Sub": "2003–present   ·   Private Practice",
+  "metric1Num": "1300+",
+  "metric1Text": "designed residential units in Warsaw",
+  "metric2Num": "70+",
+  "metric2Text": "completed administrative procedures for building permits and zoning decisions",
+  "job1Bullets": [
+    "Leading architectural projects of building structures as principal and co-designer.",
+    "Comprehensive preparation of project and permit documentation.",
+    "Organization and multidisciplinary coordination of design teams.",
+    "Author's architectural on-site supervision."
+  ],
+  "collabIntro": "Collaboration with companies including:",
+  "partnersText": "Dom Development, Budimex, Volumetric, Dantex, Auchan",
+  "job2Title": "Chief Architect at Technical Office",
+  "job2Sub": "2023   ·   Consortium of Ferrovial + Budimex + Estudio Lamela",
+  "job2Bullets": [
+    "Supervision of building and detailed design development for the expansion of Fryderyk Chopin Airport in Warsaw.",
+    "Implementation of documentation quality control procedures and supervision of contract deadlines."
+  ],
+  "job3Title": "Assistant Architect / Junior Designer",
+  "job3Sub": "1999–2003   ·   Budimex",
+  "job3Bullets": [
+    "Development of building permit documentation for companies: Polish Airports (PPL), Coca-Cola, Procter & Gamble.",
+    "Architectural concepts, visualizations, and tender proposals."
+  ],
+  "lblEdu": "EDUCATION",
+  "lblEduSchool": "University:",
+  "valEduSchool": "Warsaw University of Technology",
+  "lblEduField": "Major:",
+  "valEduField": "Faculty of Architecture",
+  "lblEduDegree": "Degree:",
+  "valEduDegree": "Master of Science, Engineer, Architect",
+  "lblLicenses": "LICENSES & MEMBERSHIPS",
+  "licensesBullets": [
+    "Building license for architectural design without restrictions",
+    "Member of the Polish Chamber of Architects (IARP, MOIA)"
+  ],
+  "lblCompetencies": "CORE COMPETENCIES",
+  "competenciesBullets": [
+    "Knowledge of the investment and construction process in Poland",
+    "Expertise in administrative procedures",
+    "In-depth knowledge of building codes, fire safety, OHS, and sanitary regulations",
+    "End-to-end autonomous project management"
+  ],
+  "lblSoftware": "SOFTWARE & TOOLS",
+  "swGroup1": "BIM / CAD",
+  "swList1": [
+    "Revit",
+    "Revit Family Editor",
+    "AutoCAD"
+  ],
+  "swGroup2": "3D / RENDER",
+  "swList2": [
+    "Blender",
+    "3ds Max",
+    "SketchUp",
+    "D5 Render"
+  ],
+  "swGroup3": "AI / AUTOMATION",
+  "swList3": [
+    "AI agents",
+    "Python, Ruby"
+  ],
+  "lblOther": "ADDITIONAL",
+  "otherBullets": [
+    "English language proficiency at B2 level",
+    "Category B driver's license"
+  ],
+  "rodoText": "I hereby give consent for my personal data included in this CV to be processed for the purposes of the recruitment process and future recruitments for a period of 12 months from receipt."
+};
+const THEME_SETTINGS = {
+  "isSingleAccent": false,
+  "singleColor": "#0284c7",
+  "colorIcons": "#ea580c",
+  "colorMetrics": "#0284c7",
+  "colorTitles": "#65707e"
+};
+
+function applyThemeColors() {
+  const icons = THEME_SETTINGS.isSingleAccent ? THEME_SETTINGS.singleColor : THEME_SETTINGS.colorIcons;
+  const metrics = THEME_SETTINGS.isSingleAccent ? THEME_SETTINGS.singleColor : THEME_SETTINGS.colorMetrics;
+  const titles = THEME_SETTINGS.isSingleAccent ? THEME_SETTINGS.singleColor : THEME_SETTINGS.colorTitles;
+
+  let dynamicStyle = document.getElementById('dynamicThemeStyles');
+  if (!dynamicStyle) {
+    dynamicStyle = document.createElement('style');
+    dynamicStyle.id = 'dynamicThemeStyles';
+    document.head.appendChild(dynamicStyle);
+  }
+
+  dynamicStyle.textContent = '.contact-icon { color: ' + icons + ' !important; } .metric-value { color: ' + metrics + ' !important; } .section-title { color: ' + titles + ' !important; }';
+}
+
+let currentLang = 'PL';
+
+function renderCV() {
+  applyThemeColors();
+  const d = currentLang === 'PL' ? DATA_PL : DATA_EN;
+
+  document.getElementById('valMainTitle').innerText = d.mainTitle;
+  document.getElementById('valMainSubtitle').innerText = d.mainSubtitle;
+  
+  const scopeContainer = document.getElementById('valMainScope');
+  scopeContainer.innerHTML = d.mainScopeLines.map(line => '<div>' + line + '</div>').join('');
+
+  document.getElementById('valContactPhone').innerText = d.contactPhone;
+  document.getElementById('valContactEmail').innerText = d.contactEmail;
+  document.getElementById('valContactLocation').innerText = d.contactLocation;
+
+  document.getElementById('lblProfileTitle').innerText = d.lblProfile;
+  document.getElementById('valProfileText').innerText = d.profileText;
+
+  document.getElementById('lblExpTitle').innerText = d.lblExp;
+  document.getElementById('valJob1Title').innerText = d.job1Title;
+  document.getElementById('valJob1Sub').innerHTML = d.job1Sub;
+  document.getElementById('valMetric1Num').innerText = d.metric1Num;
+  document.getElementById('valMetric1Text').innerText = d.metric1Text;
+  document.getElementById('valMetric2Num').innerText = d.metric2Num;
+  document.getElementById('valMetric2Text').innerText = d.metric2Text;
+
+  let bullets1Html = d.job1Bullets.map(b => '<li>' + b + '</li>').join('');
+  bullets1Html += '<li>' + d.collabIntro + '<div class="partners-row" id="valPartnersText">' + d.partnersText + '</div></li>';
+  document.getElementById('valJob1Bullets').innerHTML = bullets1Html;
+
+  document.getElementById('valJob2Title').innerText = d.job2Title;
+  document.getElementById('valJob2Sub').innerHTML = d.job2Sub;
+  document.getElementById('valJob2Bullets').innerHTML = d.job2Bullets.map(b => '<li>' + b + '</li>').join('');
+
+  document.getElementById('valJob3Title').innerText = d.job3Title;
+  document.getElementById('valJob3Sub').innerHTML = d.job3Sub;
+  document.getElementById('valJob3Bullets').innerHTML = d.job3Bullets.map(b => '<li>' + b + '</li>').join('');
+
+  document.getElementById('lblEduTitle').innerText = d.lblEdu;
+  document.getElementById('lblEduSchool').innerText = d.lblEduSchool;
+  document.getElementById('valEduSchool').innerText = d.valEduSchool;
+  document.getElementById('lblEduField').innerText = d.lblEduField;
+  document.getElementById('valEduField').innerText = d.valEduField;
+  document.getElementById('lblEduDegree').innerText = d.lblEduDegree;
+  document.getElementById('valEduDegree').innerText = d.valEduDegree;
+
+  document.getElementById('lblLicensesTitle').innerText = d.lblLicenses;
+  document.getElementById('valLicensesBullets').innerHTML = d.licensesBullets.map(b => '<li>' + b + '</li>').join('');
+
+  document.getElementById('lblCompetenciesTitle').innerText = d.lblCompetencies;
+  document.getElementById('valCompetenciesBullets').innerHTML = d.competenciesBullets.map(b => '<li>' + b + '</li>').join('');
+
+  document.getElementById('lblSoftwareTitle').innerText = d.lblSoftware;
+  document.getElementById('lblSwGroup1').innerText = d.swGroup1;
+  document.getElementById('valSwList1').innerHTML = d.swList1.map(s => '<li>' + s + '</li>').join('');
+  document.getElementById('lblSwGroup2').innerText = d.swGroup2;
+  document.getElementById('valSwList2').innerHTML = d.swList2.map(s => '<li>' + s + '</li>').join('');
+  document.getElementById('lblSwGroup3').innerText = d.swGroup3;
+  document.getElementById('valSwList3').innerHTML = d.swList3.map(s => '<li>' + s + '</li>').join('');
+
+  document.getElementById('lblOtherTitle').innerText = d.lblOther;
+  document.getElementById('valOtherBullets').innerHTML = d.otherBullets.map(b => '<li>' + b + '</li>').join('');
+
+  document.getElementById('valRodoText').innerText = d.rodoText;
+  document.getElementById('labelDownloadPdf').innerText = currentLang === 'PL' ? 'Pobierz PDF (PL)' : 'Download PDF (EN)';
+  var lblPrint = document.getElementById('labelPrint');
+  if (lblPrint) lblPrint.innerText = currentLang === 'PL' ? 'Drukuj' : 'Print';
+}
+
+function setLanguage(lang) {
+  currentLang = lang;
+  document.getElementById('btnLangPL').classList.toggle('active', lang === 'PL');
+  document.getElementById('btnLangEN').classList.toggle('active', lang === 'EN');
+  renderCV();
+}
+
+
+function getPdfExportFilename(mainTitle, lang) {
+  const isEN = (lang === 'EN' || lang === 'ENG');
+  let raw = (mainTitle || '').split(',')[0].trim();
+  raw = raw.replace(/s*[-—/]?s*(architekt|architect)/gi, '').trim();
+  if (!raw) raw = isEN ? 'Jan Kowalski' : 'Jan Kowalski';
+
+  let words = raw.split(/s+/).map(function(w) {
+    return w.split('-').map(function(part) {
+      if (!part) return '';
+      return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+    }).join('-');
+  });
+
+  let nameStr = words.join('_');
+
+  if (isEN) {
+    const plMap = {
+      'ą': 'a', 'Ą': 'A',
+      'ć': 'c', 'Ć': 'C',
+      'ę': 'e', 'Ę': 'E',
+      'ł': 'l', 'Ł': 'L',
+      'ń': 'n', 'Ń': 'N',
+      'ó': 'o', 'Ó': 'O',
+      'ś': 's', 'Ś': 'S',
+      'ź': 'z', 'Ź': 'Z',
+      'ż': 'z', 'Ż': 'Z'
+    };
+    nameStr = nameStr.replace(/[ąĄćĆęĘłŁńŃóÓśŚźŹżŻ]/g, function(c) { return plMap[c] || c; });
+    nameStr = nameStr.normalize('NFD').replace(/[̀-ͯ]/g, '');
+    nameStr = nameStr.replace(/[^a-zA-Z0-9_-]/g, '');
+    if (!nameStr) nameStr = 'Jan_Kowalski';
+    return nameStr + '_Architect_CV_EN.pdf';
+  } else {
+    nameStr = nameStr.replace(/[^a-zA-Z0-9_-ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/g, '');
+    if (!nameStr) nameStr = 'Jan_Kowalski';
+    return nameStr + '_Architekt_CV_PL.pdf';
+  }
+}
+
+async function downloadPdfDirectly() {
+  const btn = document.getElementById('btnDownloadPDF');
+  const originalText = btn.innerHTML;
+  btn.innerText = "Generowanie PDF...";
+  btn.disabled = true;
+
+  const overlayText = document.getElementById('pdfOverlayText');
+  if (overlayText) {
+    overlayText.innerText = currentLang === 'PL' 
+      ? 'Przygotowywanie pełnego arkusza A4...' 
+      : 'Preparing full A4 print sheet...';
+  }
+
+  document.body.classList.add('pdf-export-mode');
+
+  try {
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+    const sheet = document.getElementById('cvA4Sheet');
+    
+    const canvas = await html2canvas(sheet, {
+      scale: 3,
+      useCORS: true,
+      logging: false,
+      backgroundColor: '#ffffff',
+      windowWidth: 1200,
+      windowHeight: 1600,
+      ignoreElements: (el) => el.id === 'pdfExportOverlay'
+    });
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.98);
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
+    });
+
+    pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+    const d = currentLang === 'PL' ? DATA_PL : DATA_EN;
+    const filename = getPdfExportFilename(d.mainTitle, currentLang);
+    pdf.save(filename);
+  } catch (error) {
+    console.error("Błąd generowania PDF:", error);
+    alert("Wystąpił błąd podczas generowania pliku PDF.");
+  } finally {
+    document.body.classList.remove('pdf-export-mode');
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+  }
+}
+
+
+/* ========================================================
+   PŁYNNE PRZEWIJANIE (SMOOTH SCROLL) Z EASINGIEM ~0.5s
+   ======================================================== */
+(function initSmoothScroll() {
+  var isScrolling = false;
+  var targetY = window.scrollY;
+  var startY = window.scrollY;
+  var startTime = 0;
+  var DURATION = 500; // ~0.5 sekundy
+
+  function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+
+  function step(now) {
+    var elapsed = now - startTime;
+    var progress = Math.min(elapsed / DURATION, 1);
+    var ease = easeOutCubic(progress);
+
+    window.scrollTo(0, startY + (targetY - startY) * ease);
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      isScrolling = false;
+    }
+  }
+
+  window.addEventListener('wheel', function(e) {
+    if (e.target.closest('#editModalBackdrop') || e.target.closest('.modal-container') || e.target.closest('textarea') || e.target.closest('.dynamic-list-box')) {
+      return;
+    }
+    if (e.ctrlKey || e.shiftKey) return;
+
+    e.preventDefault();
+
+    var maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    var delta = e.deltaY;
+
+    if (!isScrolling) {
+      startY = window.scrollY;
+      targetY = Math.max(0, Math.min(maxScroll, window.scrollY + delta));
+    } else {
+      targetY = Math.max(0, Math.min(maxScroll, targetY + delta));
+      startY = window.scrollY;
+    }
+
+    startTime = performance.now();
+    if (!isScrolling) {
+      isScrolling = true;
+      requestAnimationFrame(step);
+    }
+  }, { passive: false });
+})();
+
+renderCV();
+</script>
+
+<!-- Nakładka generowania pełnego arkusza PDF A4 -->
+<div class="pdf-export-overlay" id="pdfExportOverlay">
+  <div class="spinner"></div>
+  <div id="pdfOverlayText">Przygotowywanie pełnego arkusza A4...</div>
+</div>
+
+</body>
+</html>
